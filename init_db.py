@@ -17,6 +17,50 @@ with open('schema.sql') as f:
 cur.execute(sql)
 
 
+def load_text_file_into_anytransactionfromonetoanother(fileName, sqlInsert, cur):
+     # Open the first text file and insert data into the table
+    subid=1
+    with open(fileName, 'r') as f:
+        for line in f:
+                data = line.strip().split('|')
+                print(data)
+                print(len(data))
+                # delete specific indices
+                indices_to_remove = [8,9,10,11,12,13]
+                data = [data[i] for i in range(len(data)) if i not in indices_to_remove]
+                data.append(subid)
+                subid=subid+1
+                data[8]='01/01/2023'
+                data[12]=1
+                cnt=0
+                for vals in data:
+                     if data[cnt]=='':
+                          data[cnt]=1
+                     cnt=cnt+1
+                #data=data[0:12]
+                #data[11]='1'
+               # data[10]='1'
+                #data[9]='1'
+                #data.append(1)
+                data[14]='aaa3'
+                data[10]='aa2'
+                data[7]=1
+                data[1]='z'
+                data[12]=1
+                data[13]='s'
+                print(data)
+                #print(data[1]+' '+data[2]+' '+data[3]+' '+data[4])
+                #del data[1:4]
+                print(len(data))
+                #modifieddata=modifydata(data)
+                #print(data)
+                cur.execute(
+                sqlInsert,
+                data
+                )
+
+
+
 def load_text_file_into_contributionsbyindividuals(fileName, sqlInsert, cur):
      # Open the first text file and insert data into the table
     cnt=0
@@ -209,6 +253,8 @@ try:
     sql_insert_pacpartysummary="INSERT INTO pacandpartysummary(CMTE_ID,TTL_RECEIPTS, TRANS_FROM_AFF, INDV_CONTRIB, OTHER_POL_CMTE_CONTRIB , CAND_CONTRIB , CAND_LOANS , TTL_LOANS_RECEIVED , TTL_DISB, TRANF_TO_AFF, INDV_REFUNDS , OTHER_POL_CMTE_REFUNDS , CAND_LOAN_REPAY , LOAN_REPAY , COH_BOP , COH_COP , DEBTS_OWED_BY , NONFED_TRANS_RECEIVED , CONTRIB_TO_OTHER_CMTE , IND_EXP , PTY_COORD_EXP , NONFED_SHARE_EXP , CVG_END_DT) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s, %s, %s,%s,%s)"
 
     
+    
+    sql_insert_anytransactionfromonetoanother="INSERT INTO anytransactionfromonecommitteetoanother(CMTE_ID , AMNDT_IND , RPT_TP , TRANSACTION_PGI , IMAGE_NUM , TRANSACTION_TP , ENTITY_TP , CONTRIBUTOR_ID, TRANSACTION_DT , TRANSACTION_AMT , OTHER_ID , TRAN_ID , FILE_NUM , MEMO_CD , MEMO_TEXT , SUB_ID  ) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s, %s, %s, %s, %s, %s)"
     sql_insert_contributionsbyindividuals="INSERT INTO contributionsbyindividuals(CMTE_ID, AMNDT_IND , RPT_TP , TRANSACTION_PGI , IMAGE_NUM , TRANSACTION_TP , ENTITY_TP , CONTRIBUTOR_ID , TRANSACTION_DT , TRANSACTION_AMT , OTHER_ID , TRAN_ID , FILE_NUM , MEMO_CD , MEMO_TEXT , SUB_ID ) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s, %s, %s, %s, %s, %s)"
     sql_insert_operatingexpenditures="INSERT INTO operatingexpenditures(CMTE_ID  , AMNDT_IND , RTP_YR , RPT_TP , LINE_NUM , SCHED_TP_CD , CONTRIBUTOR_ID , TRANSACTION_DT , TRANSACTION_AMT , TRANSACTION_PGI , PURPOSE , CATEGORY , CATEGORY_DESC , MEMO_CD , MEMO_TEXT , ENTITY_TP , SUB_ID , FILE_NUM , TRAN_ID , BACK_REF_TRAN_ID ) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s,%s, %s, %s, %s, %s, %s, %s,%s, %s, %s)"
     sql_insert_independentexpenditures="INSERT INTO independentexpenditures(CMTE_ID, AMNDT_IND , RPT_TP , TRANSACTION_PGI , TRANSACTION_TP, ENTITY_TP , CONTRIBUTOR_ID, TRANSACTION_DT , TRANSACTION_AMT, OTHER_ID , TRAN_ID , MEMO_CD, SUB_ID ) VALUES (%s, %s, %s, %s, %s, %s, %s,%s, %s, %s, %s, %s,%s)"
@@ -220,6 +266,7 @@ try:
     load_text_file_into_indpendentexpenditures('data/independentexpenditures.txt',sql_insert_independentexpenditures,cur)
     load_text_file_into_operatingexpenditures('data/operatingexpenditures.txt',sql_insert_operatingexpenditures,cur)
     load_text_file_into_contributionsbyindividuals('data/contributionfromindividuals.txt',sql_insert_contributionsbyindividuals,cur)
+    load_text_file_into_anytransactionfromonetoanother('data/anytransactionfromonetoanother.txt',sql_insert_anytransactionfromonetoanother,cur)
 
     # Commit the changes and close the connection
     conn.commit()
