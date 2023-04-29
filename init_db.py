@@ -33,12 +33,12 @@ def load_text_file_into_db(fileName, sqlInsert, cur):
                 print(len(data))
                 # delete specific indices
                 #indices_to_remove = [1, 2, 4, 18, 19] house and senate
-                indices_to_remove = [7, 8, 9, 10, 11,12]
-                data = [data[i] for i in range(len(data)) if i not in indices_to_remove]
-                data=data[0:12]
-                data[11]='1'
-                data[10]='1'
-                data[9]='1'
+                #indices_to_remove = [7, 8, 9, 10, 11,12]
+                #data = [data[i] for i in range(len(data)) if i not in indices_to_remove]
+                #data=data[0:12]
+                #data[11]='1'
+                #data[10]='1'
+                #data[9]='1'
                 #data.append(1)
                 print(data)
                 #print(data[1]+' '+data[2]+' '+data[3]+' '+data[4])
