@@ -7,7 +7,7 @@ from werkzeug.exceptions import abort
 def get_db_connection():
 	conn = psycopg2.connect(
 		host="localhost",
-		database="dmqlmilestone2",
+		database="fec",
 		user="postgres",
 		password="sand")
 	return conn
@@ -25,14 +25,12 @@ def get_post(post_id):
 
 app = Flask(__name__)
 
-
-
-@app.route('/candidates')
+@app.route('/candidates', methods=['GET'])
 def candidates():
     conn = get_db_connection()
     cursor = conn.cursor()
     # Retrieve all candidates from the database
-    candidates = []
+    candidates_a = []
     sql_select_candidates = "SELECT * FROM candidate"
     cursor.execute(sql_select_candidates)
     rows = cursor.fetchall()
@@ -54,74 +52,75 @@ def candidates():
 			'st': row[13],
 			'zip': row[14]
    		}
-        candidates.append(candidate)
+        candidates_a.append(candidate)
 
-    return render_template('candidates.html', candidates=candidates)
-
-
+    return render_template('candidates.html', candidates=candidates_a[1:10], navbar1="create candidate",navbar2='none',)
 
 
-# @app.route('/')
-# def index():
-#     conn = get_db_connection()
-#     posts = conn.execute('SELECT * FROM posts').fetchall()
-#     conn.close()
-#     return render_template('index.html', posts=posts)
+@app.route('/')
+def index():
+    return render_template('index.html', posts=[])
 
 
-# @app.route('/<int:post_id>')
-# def post(post_id):
-#     post = get_post(post_id)
-#     return render_template('post.html', post=post)
+@app.route('/<int:post_id>')
+def post(post_id):
+    post = get_post(post_id)
+    return render_template('post.html', post=post)
 
 
-# @app.route('/create', methods=('GET', 'POST'))
-# def create():
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         content = request.form['content']
+@app.route('/create', methods=('GET', 'POST'))
+def create():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
 
-#         if not title:
-#             flash('Title is required!')
-#         else:
-#             conn = get_db_connection()
-#             conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
-#                          (title, content))
-#             conn.commit()
-#             conn.close()
-#             return redirect(url_for('index'))
+        if not title:
+            flash('Title is required!')
+        else:
+            conn = get_db_connection()
+            conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
+                         (title, content))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
 
-#     return render_template('create.html')
-
-
-# @app.route('/<int:id>/edit', methods=('GET', 'POST'))
-# def edit(id):
-#     post = get_post(id)
-
-#     if request.method == 'POST':
-#         title = request.form['title']
-#         content = request.form['content']
-
-#         if not title:
-#             flash('Title is required!')
-#         else:
-#             conn = get_db_connection()
-#             conn.execute('UPDATE posts SET title = ?, content = ?'
-#                          ' WHERE id = ?',
-#                          (title, content, id))
-#             conn.commit()
-#             conn.close()
-#             return redirect(url_for('index'))
-
-#     return render_template('edit.html', post=post)
+    return render_template('create.html')
 
 
-# @app.route('/<int:id>/delete', methods=('POST',))
-# def delete(id):
-#     post = get_post(id)
-#     conn = get_db_connection()
-#     conn.execute('DELETE FROM posts WHERE id = ?', (id,))
-#     conn.commit()
-#     conn.close()
-#     flash('"{}" was successfully deleted!'.format(post['title']))
-#     return redirect(url_for('index'))
+@app.route('/edit/<int:id>', methods=('GET', 'POST'))
+def edit_candidate(id):
+    post = get_post(id)
+
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['content']
+
+        if not title:
+            flash('Title is required!')
+        else:
+            conn = get_db_connection()
+            conn.execute('UPDATE posts SET title = ?, content = ?'
+                         ' WHERE id = ?',
+                         (title, content, id))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+
+    return render_template('edit.html', post=post)
+
+
+@app.route('/delete/<int:id>', methods=('POST',))
+def delete_candidate(id):
+    # post = get_post(id)
+    conn = get_db_connection()
+    conn.execute('DELETE FROM candidate WHERE CAND_ID = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('"{}" was successfully deleted!'.format(post['title']))
+    return redirect(url_for('index'))
+
+
+# candidates()
+
+if __name__ == '__main__':
+  app.run(debug=True)

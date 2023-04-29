@@ -20,6 +20,8 @@
       <th>City</th>
       <th>ST</th>
       <th>Zip</th>
+	  <th></th> <!-- Edit button column -->
+      <th></th> <!-- Delete button column -->
     </tr>
   </thead>
   <tbody>
@@ -40,6 +42,8 @@
       <td>{{ candidate.city }}</td>
       <td>{{ candidate.st }}</td>
       <td>{{ candidate.zip }}</td>
+	  <td><a href="/edit/{{ candidate.id }}">Edit</a></td>
+      <td><a href="/delete/{{ candidate.id }}">Delete</a></td>
     </tr>
     {% endfor %}
   </tbody>

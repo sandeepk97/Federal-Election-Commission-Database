@@ -12,18 +12,20 @@
   </head>
   <body>
       <nav class="navbar navbar-expand-md navbar-light bg-light">
-        <a class="navbar-brand" href="{{ url_for('index')}}">FlaskBlog</a>
+        <a class="navbar-brand" href="{{ url_for('index')}}">Federal Election Commission</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
+				<a class="nav-link" href="{{url_for('create')}}">{{ navbar1}}</a>
             </li>
+			{% if navbar2 != 'none' %}
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('create')}}">New Post</a>
+                <a class="nav-link" href="{{url_for('create')}}">{{ navbar2}}</a>
             </li>
+			{% endif %}
             </ul>
         </div>
       </nav>
