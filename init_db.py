@@ -37,7 +37,7 @@ def load_text_file_into_db(fileName, sqlInsert, cur):
                 #data = [data[i] for i in range(len(data)) if i not in indices_to_remove]
                 #data=data[0:12]
                 #data[11]='1'
-                #data[10]='1'
+               # data[10]='1'
                 #data[9]='1'
                 #data.append(1)
                 print(data)
