@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>All Candidates</h1>
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Party Affiliation</th>
+      <th>Election Year</th>
+      <th>Office State</th>
+      <th>Office</th>
+      <th>Office District</th>
+      <th>ICI</th>
+      <th>Status</th>
+      <th>PCC</th>
+      <th>ST1</th>
+      <th>ST2</th>
+      <th>City</th>
+      <th>ST</th>
+      <th>Zip</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for candidate in candidates %}
+    <tr>
+      <td>{{ candidate.id }}</td>
+      <td>{{ candidate.name }}</td>
+      <td>{{ candidate.party_affiliation }}</td>
+      <td>{{ candidate.election_year }}</td>
+      <td>{{ candidate.office_state }}</td>
+      <td>{{ candidate.office }}</td>
+      <td>{{ candidate.office_district }}</td>
+      <td>{{ candidate.ici }}</td>
+      <td>{{ candidate.status }}</td>
+      <td>{{ candidate.pcc }}</td>
+      <td>{{ candidate.st1 }}</td>
+      <td>{{ candidate.st2 }}</td>
+      <td>{{ candidate.city }}</td>
+      <td>{{ candidate.st }}</td>
+      <td>{{ candidate.zip }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
