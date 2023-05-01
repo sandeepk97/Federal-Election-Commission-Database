@@ -86,11 +86,14 @@
     </div>
     <div class="form-group">
         <label for="cand_id">Candidate ID</label>
+        <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control" 
+		value="{{ request.form['cand_id'] or committee['cand_id'] }}">
+		<!--
 		<select name="cand_id" class="form-control">
 			{% for candidate in candidate_ids %}
 				<option value="{{ request.form['cand_id'] or committee['cand_id'] }}">{{ candidate.id }} - {{ candidate.name }}</option>
 			{% endfor %}
-		</select>
+		</select>-->
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>

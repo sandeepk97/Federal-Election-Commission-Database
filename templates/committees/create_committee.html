@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} Create a New Candidate {% endblock %}</h1>
+<h1>{% block title %} Create a New Committee {% endblock %}</h1>
 
-<!--
+
 
 <form method="post">
 	<div class="form-group">
@@ -78,15 +78,19 @@
     </div>
     <div class="form-group">
         <label for="cand_id">Candidate ID</label>
-        <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control">
+		<select name="cand_id" class="form-control">
+			{% for candidate in candidate_ids %}
+				<option value="{{ candidate.id }}">{{ candidate.id }} - {{ candidate.name }}</option>
+			{% endfor %}
+		</select>
     </div>
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
--->
-
+<!---->
+<!--
 <form method="post">
 	<div class="form-group">
         <label for="cmte_id">Committee ID</label>
@@ -171,4 +175,5 @@
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
+-->
 {% endblock %}

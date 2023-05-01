@@ -3,81 +3,48 @@
 {% block content %}
 <h1>{% block title %} Create a New Candidate Committee Linkage  {% endblock %}</h1>
 
-<!--
+
 <form method="post">
 	<div class="form-group">
-        <label for="name">Candidate ID</label>
-        <input type="text" name="id" placeholder="Candidate ID" class="form-control" value="{{ request.form['id']}}">
-    </div>
-	<div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" name="name" placeholder="Name" class="form-control" value="{{ request.form['name'] }}">
-    </div>
-    <div class="form-group">
-        <label for="party_affiliation">Party Affiliation</label>
-        <input type="text" name="party_affiliation" placeholder="Party Affiliation" class="form-control" value="{{ request.form['party_affiliation'] }}">
-    </div>
-    <div class="form-group">
-        <label for="election_year">Election Year</label>
-        <input type="text" name="election_year" placeholder="Election Year" class="form-control" value="{{ request.form['election_year'] }}">
-    </div>
-    <div class="form-group">
-        <label for="office_state">Office State</label>
-        <input type="text" name="office_state" placeholder="Office State" class="form-control" value="{{ request.form['office_state']  }}">
-    </div>
-    <div class="form-group">
-        <label for="office">Office</label>
-        <input type="text" name="office" placeholder="Office" class="form-control" value="{{ request.form['office']  }}">
-    </div>
-    <div class="form-group">
-        <label for="office_district">Office District</label>
-        <input type="text" name="office_district" placeholder="Office District" class="form-control" value="{{ request.form['office_district']  }}">
-    </div>
-    <div class="form-group">
-        <label for="ici">ICI</label>
-        <input type="text" name="ici" placeholder="ICI" class="form-control" value="{{ request.form['ici'] }}">
-    </div>
-    <div class="form-group">
-        <label for="status">Status</label>
-        <input type="text" name="status" placeholder="Status" class="form-control" value="{{ request.form['status']  }}">
-    </div>
-    <div class="form-group">
-        <label for="pcc">PCC</label>
-        <input type="text" name="pcc" placeholder="PCC" class="form-control" value="{{ request.form['pcc']  }}">
-    </div>
-    <div class="form-group">
-        <label for="st1">Street 1</label>
-        <input type="text" name="st1" placeholder="Street 1" class="form-control" value="{{ request.form['st1']  }}">
-    </div>
-    <div class="form-group">
-        <label for="st2">Street 2</label>
-        <input type="text" name="st2" placeholder="Street 2" class="form-control" value="{{ request.form['st2'] }}">
-    </div>
-    <div class="form-group">
-        <label for="city">City</label>
-        <input type="text" name="city" placeholder="City" class="form-control" value="{{ request.form['city'] }}">
-    </div>
-
-	<div class="form-group">
-		<label for="st">State</label>
-		<input type="text" name="st"
-			   placeholder="State" class="form-control"
-			   value="{{ request.form['st'] }}">
-	</div>
-	
-	<div class="form-group">
-		<label for="zip">Zip Code</label>
-		<input type="text" name="zip"
-			   placeholder="Zip Code" class="form-control"
-			   value="{{ request.form['zip'] }}">
+		<label for="cmte_id">Committee ID</label>
+		<select name="cmte_id" class="form-control">
+			{% for committee in committees_ids %}
+				<option value="{{ committee.cmte_id }}">{{ committee.cmte_id }} - {{ committee.cmte_nm }}</option>
+			{% endfor %}
+		</select>
 	</div>	
+	<div class="form-group">
+        <label for="cmte_tp">Committee Type</label>
+        <input type="text" name="cmte_tp" placeholder="Committee Type" class="form-control">
+    </div>
+	<div class="form-group">
+		<label for="cmte_dsgn">Committee Designation</label>
+		<input type="text" name="cmte_dsgn" placeholder="Committee Designation" class="form-control">
+	</div>
+	<div class="form-group">
+        <label for="cand_id">Candidate ID</label>
+		<select name="cand_id" class="form-control">
+			{% for candidate in candidate_ids %}
+				<option value="{{ candidate.id }}">{{ candidate.id }} - {{ candidate.name }}</option>
+			{% endfor %}
+		</select>
+	</div>	
+    <div class="form-group">
+        <label for="cand_election_yr">Candidate Election Year</label>
+        <input type="text" name="cand_election_yr" placeholder="Candidate Election Year" class="form-control" >
+    </div>
+    <div class="form-group">
+        <label for="fec_election_yr">FEC Election Year</label>
+        <input type="text" name="fec_election_yr" placeholder="FEC Election Year" class="form-control" >
+    </div>
+	
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
--->
 
+<!--
 <form method="post">
 	<div class="form-group">
 		<label for="cmte_id">Committee ID</label>
@@ -116,5 +83,5 @@
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
-</form>
+</form> -->
 {% endblock %}

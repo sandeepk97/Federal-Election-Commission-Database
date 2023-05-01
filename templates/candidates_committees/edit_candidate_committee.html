@@ -6,11 +6,16 @@
 <form method="post">
 	<div class="form-group">
         <label for="cand_id">Candidate ID</label>
-
+				<!--
 			   <select name="cand_id" class="form-control">
 				{% for candidate in candidate_ids %}
 					<option value="{{ request.form['cand_id'] or candidate_committee['cand_id'] }}">{{ candidate.id }} - {{ candidate.name }}</option>
 				{% endfor %}
+				-->
+				<input type="text" name="cand_id" placeholder="Candidate ID"
+               class="form-control"
+               value="{{ request.form['cand_id'] or candidate_committee['cand_id'] }}">
+
 			</select>
     </div>
 
@@ -30,11 +35,16 @@
 
     <div class="form-group">
         <label for="cmte_id">Committee ID</label>
+		<!--
 		<select name="cmte_id" class="form-control">
 		 {% for committee in committees_ids %}
 			   <option value="{{ request.form['cmte_id'] or candidate_committee['cmte_id'] }}">{{ committee.cmte_id }} - {{ committee.cmte_nm }}</option>
 		   {% endfor %}
 		</select>
+		-->
+		<input type="text" name="cmte_id" placeholder="Committee ID"
+		class="form-control"
+		value="{{ request.form['cmte_id'] or candidate_committee['cmte_id'] }}">
     </div>
 
     <div class="form-group">

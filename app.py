@@ -65,7 +65,7 @@ def get_all_candidate_ids():
         candidates_a.append(candidate)
     conn.close()
     cursor.close()
-    return candidates_a[-10:]
+    return candidates_a[-100:]
 
 @app.route('/candidates', methods=['GET'])
 def get_all_candidates():
@@ -96,7 +96,7 @@ def get_all_candidates():
    		}
         candidates_a.append(candidate)
 
-    return render_template('candidates/candidates.html', candidates=candidates_a[-10:], navbar1="create candidate", navbar2='none',navbar1Link=url_for("create_candidate"),)
+    return render_template('candidates/candidates.html', candidates=candidates_a[-100:], navbar1="create candidate", navbar2='none',navbar1Link=url_for("create_candidate"),)
 
 
 @app.route('/candidates/create', methods=('GET', 'POST'))
@@ -238,7 +238,7 @@ def get_all_committee_ids():
         committees_a.append(committee)
     conn.close()
     cursor.close()
-    return committees_a[-10:]
+    return committees_a[-100:]
 
 
 @app.route('/committees', methods=['GET'])
@@ -270,7 +270,7 @@ def get_all_committees():
 
         committees_a.append(committee)
     conn.close()
-    return render_template('committees/committees.html', committees=committees_a[-10:], navbar1='create committee', navbar2='none', navbar1Link=url_for("create_committee"))
+    return render_template('committees/committees.html', committees=committees_a[-100:], navbar1='create committee', navbar2='none', navbar1Link=url_for("create_committee"))
 
 @app.route('/committees/create', methods=('GET', 'POST'))
 def create_committee():
@@ -402,7 +402,7 @@ def get_all_candidates_committees():
 		}
         candidates_committees_a.append(candidates_committee)
     conn.close()
-    return render_template('candidates_committees/candidates_committees.html', candidates_committees=candidates_committees_a[-10:], navbar1='create candidate committee', navbar2='none', navbar1Link=url_for("create_candidate_committee"))
+    return render_template('candidates_committees/candidates_committees.html', candidates_committees=candidates_committees_a[-100:], navbar1='create candidate committee', navbar2='none', navbar1Link=url_for("create_candidate_committee"))
 
 
 @app.route('/candidates_committees/create', methods=('GET', 'POST'))
