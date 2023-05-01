@@ -80,9 +80,13 @@
 
 <form method="post">
 	<div class="form-group">
-        <label for="cmte_id">Committee ID</label>
-        <input type="text" name="cmte_id" placeholder="Committee ID" class="form-control" value="C00000001">
-    </div>
+		<label for="cmte_id">Committee ID</label>
+		<select name="cmte_id" class="form-control">
+			{% for committee in committees_ids %}
+				<option value="{{ committee.cmte_id }}">{{ committee.cmte_id }} - {{ committee.cmte_nm }}</option>
+			{% endfor %}
+		</select>
+	</div>	
 	<div class="form-group">
         <label for="cmte_tp">Committee Type</label>
         <input type="text" name="cmte_tp" placeholder="Committee Type" class="form-control" value="P">
@@ -91,10 +95,14 @@
 		<label for="cmte_dsgn">Committee Designation</label>
 		<input type="text" name="cmte_dsgn" placeholder="Committee Designation" class="form-control" value="D">
 	</div>
-    <div class="form-group">
+	<div class="form-group">
         <label for="cand_id">Candidate ID</label>
-        <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control" value="12345677">
-    </div>
+		<select name="cand_id" class="form-control">
+			{% for candidate in candidate_ids %}
+				<option value="{{ candidate.id }}">{{ candidate.id }} - {{ candidate.name }}</option>
+			{% endfor %}
+		</select>
+	</div>	
     <div class="form-group">
         <label for="cand_election_yr">Candidate Election Year</label>
         <input type="text" name="cand_election_yr" placeholder="Candidate Election Year" class="form-control" value="2022">

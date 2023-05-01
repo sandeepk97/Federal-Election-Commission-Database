@@ -50,6 +50,23 @@ def get_candidate(id):
     }
     return candidate
 
+def get_all_candidate_ids():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    candidates_a = []
+    sql_select_candidates = "SELECT * FROM candidate"
+    cursor.execute(sql_select_candidates)
+    rows = cursor.fetchall()
+    for row in rows:
+        candidate = {
+			'id': row[0],
+			'name': row[1]
+   		}
+        candidates_a.append(candidate)
+    conn.close()
+    cursor.close()
+    return candidates_a[-10:]
+
 @app.route('/candidates', methods=['GET'])
 def get_all_candidates():
     conn = get_db_connection()
@@ -206,6 +223,24 @@ def get_committee(id):
     return committee
 
 
+def get_all_committee_ids():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    committees_a = []
+    sql_select_committees = "SELECT * FROM committee"
+    cursor.execute(sql_select_committees)
+    rows = cursor.fetchall()
+    for row in rows:
+        committee = {
+			'cmte_id': row[0],
+   			'cmte_nm': row[1],
+		}
+        committees_a.append(committee)
+    conn.close()
+    cursor.close()
+    return committees_a[-10:]
+
+
 @app.route('/committees', methods=['GET'])
 def get_all_committees():
     conn = get_db_connection()
@@ -271,7 +306,7 @@ def create_committee():
             flash('Committee "{}" was successfully created!'.format(cmte_name), 'success')
             return redirect(url_for('get_all_committees'))
 
-    return render_template('committees/create_committee.html',navbar1Link=url_for("create_committee"))
+    return render_template('committees/create_committee.html',navbar1Link=url_for("create_committee"), candidate_ids=get_all_candidate_ids())
 
 
 @app.route('/committees/edit/<string:id>', methods=('GET', 'POST'))
@@ -310,7 +345,7 @@ def edit_committee(id):
             flash('"{}" was successfully edited!'.format(committee['cmte_nm']), 'success')
             return redirect(url_for('get_all_committees'))
 
-    return render_template('committees/edit_committee.html', committee=committee, navbar1Link=url_for("edit_committee", id=id))
+    return render_template('committees/edit_committee.html', committee=committee, navbar1Link=url_for("edit_committee", id=id), candidate_ids=get_all_candidate_ids())
 
 @app.route('/committees/delete/<string:id>', methods=['GET', 'POST'])
 def delete_committee(id):
@@ -398,7 +433,7 @@ def create_candidate_committee():
             flash('Candidate-Committee link was successfully created!', 'success')
             return redirect(url_for('get_all_candidates_committees'))
 
-    return render_template('candidates_committees/create_candidate_committee.html',navbar1Link=url_for("create_candidate_committee"))
+    return render_template('candidates_committees/create_candidate_committee.html',navbar1Link=url_for("create_candidate_committee"), committees_ids=get_all_committee_ids(), candidate_ids=get_all_candidate_ids())
 
 
 
@@ -429,7 +464,7 @@ def edit_candidate_committee(id):
             flash('Candidate-Committee link was successfully edited!', 'success')
             return redirect(url_for('get_all_candidates_committees'))
 
-    return render_template('candidates_committees/edit_candidate_committee.html', candidate_committee=candidate_committee, navbar1Link=url_for("edit_candidate_committee", id=id))
+    return render_template('candidates_committees/edit_candidate_committee.html', candidate_committee=candidate_committee, navbar1Link=url_for("edit_candidate_committee", id=id), committees_ids=get_all_committee_ids(), candidate_ids=get_all_candidate_ids())
 
 @app.route('/candidates_committees/delete/<string:id>', methods=('GET', 'POST'))
 def delete_candidate_committee(id):

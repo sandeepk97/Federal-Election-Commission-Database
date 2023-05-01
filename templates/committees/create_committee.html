@@ -160,7 +160,11 @@
     </div>
     <div class="form-group">
         <label for="cand_id">Candidate ID</label>
-        <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control" value="123">
+		<select name="cand_id" class="form-control">
+			{% for candidate in candidate_ids %}
+				<option value="{{ candidate.id }}">{{ candidate.id }} - {{ candidate.name }}</option>
+			{% endfor %}
+		</select>
     </div>
 
     <div class="form-group">
