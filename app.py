@@ -1,3 +1,4 @@
+import random
 import psycopg2
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
@@ -119,7 +120,7 @@ def create_candidate():
             conn.commit()
             conn.close()
             flash('"{}" was successfully created!'.format(name), 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('get_all_candidates'))
 
     return render_template('candidates/create_candidate.html',navbar1Link=url_for("create_candidate"),)
 
@@ -159,7 +160,7 @@ def edit_candidate(id):
             cursor.close()
             conn.close()
             flash('"{}" was successfully edited!'.format(candidate['name']), 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('get_all_candidates'))
 
     return render_template('candidates/edit_candidate.html', candidate=candidate, navbar1Link=url_for("edit_candidate", id=id ),)
 
@@ -268,7 +269,7 @@ def create_committee():
             conn.commit()
             conn.close()
             flash('Committee "{}" was successfully created!'.format(cmte_name), 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('get_all_committees'))
 
     return render_template('committees/create_committee.html',navbar1Link=url_for("create_committee"))
 
@@ -307,7 +308,7 @@ def edit_committee(id):
             cursor.close()
             conn.close()
             flash('"{}" was successfully edited!'.format(committee['cmte_nm']), 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('get_all_committees'))
 
     return render_template('committees/edit_committee.html', committee=committee, navbar1Link=url_for("edit_committee", id=id))
 
@@ -322,6 +323,126 @@ def delete_committee(id):
     conn.close()
     flash('"{}" was successfully deleted!'.format(committee['cmte_nm']), 'success')
     return redirect(url_for('get_all_committees'))
+
+
+def get_candidate_committee(linkage_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    sql_select_candidate_committee = "SELECT * FROM candidate_committee WHERE LINKAGE_ID = %s"
+    cursor.execute(sql_select_candidate_committee, (linkage_id,))
+    row = cursor.fetchone()
+    conn.close()
+    if row is None:
+        abort(404)
+    candidate_committee = {
+			'cand_id': row[0],
+			'cand_election_yr': row[1],
+			'fec_election_yr': row[2],
+			'cmte_id': row[3],
+			'cmte_tp': row[4],
+			'cmte_dsgn': row[5],
+			'linkage_id': row[6]
+		}
+    return candidate_committee
+
+
+
+@app.route('/candidates_committees', methods=['GET'])
+def get_all_candidates_committees():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    candidates_committees_a = []
+    sql_select_candidates_committees = "SELECT * FROM candidate_committee"
+    cursor.execute(sql_select_candidates_committees)
+    rows = cursor.fetchall()
+    for row in rows:
+        candidates_committee = {
+			'cand_id': row[0],
+			'cand_election_yr': row[1],
+			'fec_election_yr': row[2],
+			'cmte_id': row[3],
+			'cmte_tp': row[4],
+			'cmte_dsgn': row[5],
+			'linkage_id': row[6]
+		}
+        candidates_committees_a.append(candidates_committee)
+    conn.close()
+    return render_template('candidates_committees/candidates_committees.html', candidates_committees=candidates_committees_a[-10:], navbar1='create candidate committee', navbar2='none', navbar1Link=url_for("create_candidate_committee"))
+
+
+@app.route('/candidates_committees/create', methods=('GET', 'POST'))
+def create_candidate_committee():
+    if request.method == 'POST':
+        cand_id = request.form['cand_id']
+        cand_election_yr = request.form['cand_election_yr']
+        fec_election_yr = request.form['fec_election_yr']
+        cmte_id = request.form['cmte_id']
+        cmte_tp = request.form['cmte_tp']
+        cmte_dsgn = request.form['cmte_dsgn']
+        linkage_id = random.randint(1000000, 9999999)
+        
+        sql_insert_candidate_committee = "INSERT INTO candidate_committee (CAND_ID, CAND_ELECTION_YR, FEC_ELECTION_YR, CMTE_ID, CMTE_TP, CMTE_DSGN, LINKAGE_ID) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        
+        if not cand_id:
+            flash('Candidate ID is required!')
+            return redirect(url_for('create_candidate_committee'))
+        elif not cmte_id:
+            flash('Committee ID is required!')
+            return redirect(url_for('create_candidate_committee'))
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(sql_insert_candidate_committee, (cand_id, cand_election_yr, fec_election_yr, cmte_id, cmte_tp, cmte_dsgn, linkage_id))
+            conn.commit()
+            conn.close()
+            flash('Candidate-Committee link was successfully created!', 'success')
+            return redirect(url_for('get_all_candidates_committees'))
+
+    return render_template('candidates_committees/create_candidate_committee.html',navbar1Link=url_for("create_candidate_committee"))
+
+
+
+@app.route('/candidates_committees/edit/<string:id>', methods=('GET', 'POST'))
+def edit_candidate_committee(id):
+    candidate_committee = get_candidate_committee(id)
+
+    if request.method == 'POST':
+        cand_id = request.form['cand_id']
+        cand_election_yr = request.form['cand_election_yr']
+        fec_election_yr = request.form['fec_election_yr']
+        cmte_id = request.form['cmte_id']
+        cmte_tp = request.form['cmte_tp']
+        cmte_dsgn = request.form['cmte_dsgn']
+
+        if not cand_id:
+            flash('Candidate ID is required!')
+        elif not cmte_id:
+            flash('Committee ID is required!')
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("UPDATE candidate_committee SET CAND_ID = %s, CAND_ELECTION_YR = %s, FEC_ELECTION_YR = %s, CMTE_ID = %s, CMTE_TP = %s, CMTE_DSGN = %s WHERE LINKAGE_ID = %s",
+                           (cand_id, cand_election_yr, fec_election_yr, cmte_id, cmte_tp, cmte_dsgn, id))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            flash('Candidate-Committee link was successfully edited!', 'success')
+            return redirect(url_for('get_all_candidates_committees'))
+
+    return render_template('candidates_committees/edit_candidate_committee.html', candidate_committee=candidate_committee, navbar1Link=url_for("edit_candidate_committee", id=id))
+
+@app.route('/candidates_committees/delete/<string:id>', methods=('GET', 'POST'))
+def delete_candidate_committee(id):
+    candidate_committee = get_candidate_committee(id)
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM candidate_committee WHERE LINKAGE_ID = %s', (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    flash('"{}" was successfully deleted!'.format(candidate_committee['linkage_id']), 'success')
+    return redirect(url_for('get_all_candidates_committees'))
+
 
 import os
 

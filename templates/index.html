@@ -1,12 +1,90 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block title %}  {% endblock %}</h1>
-        <a href="/candidates">
-            <h2>Candidates</h2>
-        </a>
-		<a href="/committees">
-            <h2>Committees</h2>
-        </a>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Candidates</h2>
+                    <a href="/candidates" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Committees</h2>
+                    <a href="/committees" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Candidate Committees Linkages</h2>
+                    <a href="/candidates_committees" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Contributor</h2>
+                    <a href="/contributor" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Contributions By Individuals</h2>
+                    <a href="/contributionsbyindividuals" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Any Transaction From One Committee to another</h2>
+                    <a href="/anytransactionfromonecommitteetoanother" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Current campaign for house and senates</h2>
+                    <a href="/currentcampaignforhouseandsenate" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Independent Expenditures</h2>
+                    <a href="/independentexpenditures" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Operating expenditures</h2>
+                    <a href="/operatingexpenditures" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+		<div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Pac and party summary</h2>
+                    <a href="/operatingexpenditures" class="btn btn-primary">View</a>
+                </div>
+            </div>
+        </div>
+		
+	</div>
+</div>
         <hr>
 {% endblock %}

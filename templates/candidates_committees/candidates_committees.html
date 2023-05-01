@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Candidate Committees Linkages</h1>
+<table class="table table-striped">
+	<thead class="thead-dark">
+	  <tr>
+		<th>Candidate ID</th>
+		<th>Candidate Election Year</th>
+		<th>FEC Election Year</th>
+		<th>Committee ID</th>
+		<th>Committee Type</th>
+		<th>Committee Designation</th>
+		<th>Linkage ID</th>
+		<th></th> <!-- Edit button column -->
+		<th></th> <!-- Delete button column -->
+	  </tr>
+	</thead>
+	<tbody>
+	  {% for cc in candidates_committees %}
+	  <tr>
+		<td>{{ cc.cand_id }}</td>
+		<td>{{ cc.cand_election_yr }}</td>
+		<td>{{ cc.fec_election_yr }}</td>
+		<td>{{ cc.cmte_id }}</td>
+		<td>{{ cc.cmte_tp }}</td>
+		<td>{{ cc.cmte_dsgn }}</td>
+		<td>{{ cc.linkage_id }}</td>
+		<td><a href="/candidates_committees/edit/{{cc.linkage_id}}" class="btn btn-primary">Edit</a></td>
+		<td><a href="/candidates_committees/delete/{{cc.linkage_id}}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this candidate_committee linkage?')">Delete</a></td>	  
+	  </tr>
+	  {% endfor %}
+	</tbody>
+  </table>
+
+{% endblock %}

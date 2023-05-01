@@ -4,73 +4,82 @@
 <h1>{% block title %} Create a New Candidate {% endblock %}</h1>
 
 <!--
+
 <form method="post">
 	<div class="form-group">
-        <label for="name">Candidate ID</label>
-        <input type="text" name="id" placeholder="Candidate ID" class="form-control" value="{{ request.form['id']}}">
+        <label for="cmte_id">Committee ID</label>
+        <input type="text" name="cmte_id" placeholder="Committee ID" class="form-control" >
     </div>
 	<div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" name="name" placeholder="Name" class="form-control" value="{{ request.form['name'] }}">
+        <label for="cmte_nm">Committee Name</label>
+        <input type="text" name="cmte_nm" placeholder="Committee Name" class="form-control" >
     </div>
     <div class="form-group">
-        <label for="party_affiliation">Party Affiliation</label>
-        <input type="text" name="party_affiliation" placeholder="Party Affiliation" class="form-control" value="{{ request.form['party_affiliation'] }}">
+        <label for="tres_nm">Treasurer Name</label>
+        <input type="text" name="tres_nm" placeholder="Treasurer Name" class="form-control" >
     </div>
     <div class="form-group">
-        <label for="election_year">Election Year</label>
-        <input type="text" name="election_year" placeholder="Election Year" class="form-control" value="{{ request.form['election_year'] }}">
+        <label for="cmte_st1">Committee Street 1</label>
+        <input type="text" name="cmte_st1" placeholder="Committee Street 1" class="form-control" >
     </div>
     <div class="form-group">
-        <label for="office_state">Office State</label>
-        <input type="text" name="office_state" placeholder="Office State" class="form-control" value="{{ request.form['office_state']  }}">
+        <label for="cmte_st2">Committee Street 2</label>
+        <input type="text" name="cmte_st2" placeholder="Committee Street 2" class="form-control" >
     </div>
     <div class="form-group">
-        <label for="office">Office</label>
-        <input type="text" name="office" placeholder="Office" class="form-control" value="{{ request.form['office']  }}">
+        <label for="cmte_city">Committee City</label>
+        <input type="text" name="cmte_city" placeholder="Committee City" class="form-control" >
     </div>
-    <div class="form-group">
-        <label for="office_district">Office District</label>
-        <input type="text" name="office_district" placeholder="Office District" class="form-control" value="{{ request.form['office_district']  }}">
-    </div>
-    <div class="form-group">
-        <label for="ici">ICI</label>
-        <input type="text" name="ici" placeholder="ICI" class="form-control" value="{{ request.form['ici'] }}">
-    </div>
-    <div class="form-group">
-        <label for="status">Status</label>
-        <input type="text" name="status" placeholder="Status" class="form-control" value="{{ request.form['status']  }}">
-    </div>
-    <div class="form-group">
-        <label for="pcc">PCC</label>
-        <input type="text" name="pcc" placeholder="PCC" class="form-control" value="{{ request.form['pcc']  }}">
-    </div>
-    <div class="form-group">
-        <label for="st1">Street 1</label>
-        <input type="text" name="st1" placeholder="Street 1" class="form-control" value="{{ request.form['st1']  }}">
-    </div>
-    <div class="form-group">
-        <label for="st2">Street 2</label>
-        <input type="text" name="st2" placeholder="Street 2" class="form-control" value="{{ request.form['st2'] }}">
-    </div>
-    <div class="form-group">
-        <label for="city">City</label>
-        <input type="text" name="city" placeholder="City" class="form-control" value="{{ request.form['city'] }}">
-    </div>
-
 	<div class="form-group">
-		<label for="st">State</label>
-		<input type="text" name="st"
-			   placeholder="State" class="form-control"
-			   value="{{ request.form['st'] }}">
+		<label for="cmte_st">Committee State</label>
+		<input type="text" name="cmte_st"
+			   placeholder="Committee State" class="form-control"
+			   >
 	</div>
 	
 	<div class="form-group">
-		<label for="zip">Zip Code</label>
-		<input type="text" name="zip"
-			   placeholder="Zip Code" class="form-control"
-			   value="{{ request.form['zip'] }}">
+		<label for="cmte_zip">Committee Zip Code</label>
+		<input type="text" name="cmte_zip"
+			   placeholder="Committee Zip Code" class="form-control"
+			   >
 	</div>	
+	
+	<div class="form-group">
+		<label for="cmte_dsgn">Committee Designation</label>
+		<input type="text" name="cmte_dsgn" placeholder="Committee Designation" class="form-control">
+	</div>
+	<div class="form-group">
+		<label for="cmte_tp">Committee Type</label>
+		<input type="text" name="cmte_tp" placeholder="Committee Type" class="form-control" >
+	</div>
+	<div class="form-group">
+		<label for="cmte_pty_affiliation">Committee Party Affiliation</label>
+		<input type="text" name="cmte_pty_affiliation" placeholder="Committee Party Affiliation" class="form-control" >
+	</div>
+	<div class="form-group">
+		<label for="cmte_filing_freq">Committee Filing Frequency</label>
+		<input type="text" name="cmte_filing_freq" placeholder="Committee Filing Frequency" class="form-control" >
+	</div>
+	<div class="form-group">
+		<label for="org_tp">Organization Type</label>
+		<input type="text" name="org_tp" placeholder="Organization Type" class="form-control" >
+	</div>
+	<div class="form-group">
+        <label for="cmte_filing_freq">Filing Frequency</label>
+        <input type="text" name="cmte_filing_freq" placeholder="Filing Frequency" class="form-control" >
+    </div>
+    <div class="form-group">
+        <label for="org_type">Organization Type</label>
+        <input type="text" name="org_type" placeholder="Organization Type" class="form-control" >
+    </div>
+    <div class="form-group">
+        <label for="connected_org_nm">Connected Organization Name</label>
+        <input type="text" name="connected_org_nm" placeholder="Connected Organization Name" class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="cand_id">Candidate ID</label>
+        <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control">
+    </div>
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
@@ -153,7 +162,6 @@
         <label for="cand_id">Candidate ID</label>
         <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control" value="123">
     </div>
-	
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>

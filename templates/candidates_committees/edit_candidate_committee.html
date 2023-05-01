@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Edit Candidate Committee Linkage ID: {{ request.form['linkage_id'] or candidate_committee['linkage_id'] }} {% endblock %}</h1>
+<hr>
+<form method="post">
+	<div class="form-group">
+        <label for="cand_id">Candidate ID</label>
+        <input type="text" name="cand_id" placeholder="Candidate ID"
+               class="form-control"
+               value="{{ request.form['cand_id'] or candidate_committee['cand_id'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="cand_election_yr">Candidate Election Year</label>
+        <input type="text" name="cand_election_yr" placeholder="Candidate election year"
+               class="form-control"
+               value="{{ request.form['cand_election_yr'] or candidate_committee['cand_election_yr'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="fec_election_yr">FEC Election Year</label>
+        <input type="text" name="fec_election_yr" placeholder="FEC election year"
+               class="form-control"
+               value="{{ request.form['fec_election_yr'] or candidate_committee['fec_election_yr'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="cmte_id">Committee ID</label>
+        <input type="text" name="cmte_id" placeholder="Committee ID"
+               class="form-control"
+               value="{{ request.form['cmte_id'] or candidate_committee['cmte_id'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="cmte_tp">Committee Type</label>
+        <input type="text" name="cmte_tp" placeholder="Committee type"
+               class="form-control"
+               value="{{ request.form['cmte_tp'] or candidate_committee['cmte_tp'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="cmte_dsgn">Committee Designation</label>
+        <input type="text" name="cmte_dsgn" placeholder="Committee designation"
+               class="form-control"
+               value="{{ request.form['cmte_dsgn'] or candidate_committee['cmte_dsgn'] }}">
+    </div>
+
+	<!--
+    <div class="form-group">
+        <label for="linkage_id">Linkage ID</label>
+        <input type="text" name="linkage_id" placeholder="Linkage ID"
+               class="form-control"
+               value="{{ request.form['linkage_id'] or candidate_committee['LINKAGE_ID'] }}">
+    </div>-->
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+
+{% endblock %}
+
