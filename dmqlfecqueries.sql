@@ -1,0 +1,208 @@
+INSERT INTO candidate (CAND_ID, CAND_NAME, CAND_PTY_AFFILIATION, CAND_ELECTION_YR, CAND_OFFICE_ST, CAND_OFFICE, CAND_OFFICE_DISTRICT, CAND_ICI, CAND_STATUS, CAND_PCC, CAND_ST1, CAND_ST2, CAND_CITY, CAND_ST, CAND_ZIP)
+VALUES ('C12345678', 'John Smith', 'REP', '2020', 'CA', 'H', '03', 'O', 'C', 'PCC123456', '123 Main Street', '', 'Los Angeles', 'CA', '90001');
+
+
+UPDATE candidate 
+SET CAND_NAME = 'Jane Doe'
+WHERE CAND_ID = 'C12345678';
+
+
+DELETE FROM candidate WHERE CAND_ID = 'C12345678';
+
+
+INSERT INTO committee (CMTE_ID, CMTE_NM, TRES_NM, CMTE_ST1, CMTE_CITY, CMTE_ST, CMTE_ZIP, CMTE_DSGN, CMTE_TP, CMTE_PTY_AFFILIATION, CMTE_FILING_FREQ, ORG_TP, CONNECTED_ORG_NM, CAND_ID)
+VALUES 
+('C00000001', 'Friends of Jane Doe', 'John Smith', '123 Main St', 'Los Angeles', 'CA', '90001', 'A', 'P', 'DEM', 'Q', 'C', 'ABC Consulting', 'C12345678'),
+('C00000002', 'Republicans for John Smith', 'Jane Doe', '456 Lincoln Blvd', 'San Francisco', 'CA', '94102', 'B', 'N', 'REP', 'M', 'P', NULL, 'C98765432'),
+('C00000003', 'Independent Committee to Elect Jim Brown', 'Sarah Lee', '555 Independence Ave', 'Washington', 'DC', '20001', 'A', 'O', NULL, 'Q', 'M', 'XYZ Agency', 'C00098765');
+
+
+
+
+INSERT INTO committee (CMTE_ID, CMTE_NM, TRES_NM, CMTE_ST1, CMTE_CITY, CMTE_ST, CMTE_ZIP, CMTE_DSGN, CMTE_TP, CMTE_PTY_AFFILIATION, CMTE_FILING_FREQ, ORG_TP, CONNECTED_ORG_NM, CAND_ID)
+VALUES 
+('C00000004', 'Democrats for Lisa Smith', 'John Doe', '789 Oak St', 'Sacramento', 'CA', '95814', 'A', 'P', 'DEM', 'Q', 'C', 'LMN Marketing', 'C12345678'),
+('C00000005', 'Green Party of California', 'Betty White', '888 Olive Ave', 'San Diego', 'CA', '92101', 'B', 'P', 'GRE', 'M', 'P', NULL, 'C98765432');
+
+
+SELECT * FROM operatingexpenditures WHERE cmte_id = 'C00473918';
+
+UPDATE committee
+SET TRES_NM = 'Mike Brown'
+WHERE CMTE_ID = 'C00000001';
+
+
+UPDATE committee
+SET CMTE_DSGN = 'B'
+WHERE CMTE_PTY_AFFILIATION = 'REP';
+
+
+
+SELECT * FROM candidate_committee;
+
+
+INSERT INTO candidate_committee 
+(CAND_ID, CAND_ELECTION_YR, FEC_ELECTION_YR, CMTE_ID, CMTE_TP, CMTE_DSGN, LINKAGE_ID) 
+VALUES ('C12345677', 2022, 2022, 'C00000001', 'P', 'D', 34567);
+
+
+UPDATE candidate_committee 
+SET CMTE_TP = 'P', CMTE_DSGN = 'D' 
+WHERE LINKAGE_ID = 12345;
+
+
+DELETE FROM candidate_committee 
+WHERE LINKAGE_ID = 23456;
+
+
+SELECT * FROM contributor;
+
+
+INSERT INTO contributor (CONTRIBUTOR_ID, NAME, CITY, STATE, ZIP_CODE, EMPLOYER, OCCUPATION)
+VALUES ('123456789', 'John Smith', 'NY', 'NY', '10001', 'ABC Inc.', 'Engineer');
+
+UPDATE contributor
+SET NAME = 'Jane Doe', EMPLOYER = 'XYZ Inc.'
+WHERE CONTRIBUTOR_ID = '123456789';
+
+SELECT COUNT(*) FROM contributor;
+
+
+SELECT * FROM contributionsbyindividuals;
+
+INSERT INTO contributionsbyindividuals (CMTE_ID, AMNDT_IND, RPT_TP, TRANSACTION_PGI, IMAGE_NUM, TRANSACTION_TP, ENTITY_TP, CONTRIBUTOR_ID, TRANSACTION_DT, TRANSACTION_AMT, OTHER_ID, TRAN_ID, FILE_NUM, MEMO_CD, MEMO_TEXT, SUB_ID)
+VALUES ('C00000001', 'N', 'Q1', 'P', '12345678910111213', '15', 'IND', '123456789', '2022-01-01', '1000.00', NULL, 'ABCDE1234-2022-01-01-1', 1234567890, 'X', 'Donation for campaign expenses', 9876543210987654321);
+
+UPDATE contributionsbyindividuals
+SET TRANSACTION_AMT = '2000.00', MEMO_TEXT = 'New memo text'
+WHERE SUB_ID = '9876543210987654321';
+
+
+SELECT * FROM anytransactionfromonecommitteetoanother;
+
+
+INSERT INTO anytransactionfromonecommitteetoanother (
+    CMTE_ID, AMNDT_IND, RPT_TP, TRANSACTION_PGI, 
+    IMAGE_NUM, TRANSACTION_TP, ENTITY_TP, CONTRIBUTOR_ID, 
+    TRANSACTION_DT, TRANSACTION_AMT, OTHER_ID, TRAN_ID, 
+    FILE_NUM, MEMO_CD, MEMO_TEXT, SUB_ID
+) VALUES (
+    'C00000001', 'N', 'Q1', 'P', '12345678910111213', 
+    '15', 'COM', '123456789', '2022-01-01', 1000.00, NULL, 
+    'ABCDE1234-2022-01-01-1', 1234567890, 'X', 'Donation for campaign expenses', 9876543210987654321
+);
+
+UPDATE anytransactionfromonecommitteetoanother
+SET TRANSACTION_AMT = '2000.00', MEMO_TEXT = 'New memo text'
+WHERE SUB_ID = '9876543210987654321';
+
+
+SELECT * FROM currentcampaignforhouseandsenate 
+
+INSERT INTO currentcampaignforhouseandsenate (
+    CAND_ID, PTY_CD, TTL_RECEIPTS, TRANS_FROM_AUTH, TTL_DISB, 
+    TRANS_TO_AUTH, COH_BOP, COH_COP, CAND_CONTRIB, CAND_LOANS, 
+    OTHER_LOANS, CAND_LOAN_REPAY, OTHER_LOAN_REPAY, DEBTS_OWED_BY, 
+    TTL_INDIV_CONTRIB, SPEC_ELECTION, PRIM_ELECTION, RUN_ELECTION, 
+    GEN_ELECTION, GEN_ELECTION_PRECENT, OTHER_POL_CMTE_CONTRIB, 
+    POL_PTY_CONTRIB, CVG_END_DT, INDIV_REFUNDS, CMTE_REFUNDS
+) VALUES (
+    'C12345677', 'D', 100000.00, 5000.00, 80000.00, 
+    6000.00, 20000.00, 18000.00, 10000.00, 5000.00, 
+    0.00, 0.00, 0.00, 1000.00, 50000.00, 'N', 'Y', 'N', 
+    'N', 0.00, 4000.00, 8000.00, '2022-11-03', 0.00, 0.00
+);
+
+UPDATE currentcampaignforhouseandsenate
+SET PTY_CD = 'R', TTL_DISB = '90000.00', CMTE_REFUNDS = '5000.00'
+WHERE CAND_ID = 'C12345677';
+
+SELECT * FROM independentexpenditures
+
+INSERT INTO independentexpenditures (
+    CMTE_ID, AMNDT_IND, RPT_TP, TRANSACTION_PGI, TRANSACTION_TP, 
+    ENTITY_TP, CONTRIBUTOR_ID, TRANSACTION_DT, TRANSACTION_AMT, 
+    OTHER_ID, TRAN_ID, MEMO_CD, SUB_ID
+) VALUES (
+    'C00000001', 'N', 'M2', 'P', 'IE', 'ORG', '123456789', '2022-10-15', 
+    5000.00, NULL, 987654321, NULL, 1234567890
+);
+
+UPDATE independentexpenditures
+SET TRANSACTION_AMT = 10000.00
+WHERE CMTE_ID = 'C00000001' AND TRAN_ID = 987654321;
+
+SELECT * FROM operatingexpenditures 
+
+INSERT INTO operatingexpenditures (
+CMTE_ID, AMNDT_IND, RTP_YR, RPT_TP, LINE_NUM,
+SCHED_TP_CD, CONTRIBUTOR_ID, TRANSACTION_DT, 
+TRANSACTION_AMT, TRANSACTION_PGI, PURPOSE, CATEGORY, 
+CATEGORY_DESC,MEMO_CD, MEMO_TEXT, ENTITY_TP, SUB_ID,
+FILE_NUM, TRAN_ID, BACK_REF_TRAN_ID 
+) VALUES (
+'C00000001', 'N', 2022, 'M2', 1, 1, '123456789',
+'2022-10-15', 500.00, 'G', 'Test Purpose', 'Test Category',
+'Test Category Desc', NULL, NULL, 'ORG', 
+'1234567890', '100', '987654321', NULL);
+
+
+UPDATE operatingexpenditures 
+SET TRANSACTION_AMT = 1000.00 
+WHERE CMTE_ID = 'C00000001' AND TRAN_ID = '987654321';
+
+
+SELECT *
+FROM committee 
+FULL OUTER JOIN candidate_committee 
+ON committee.CMTE_ID = candidate_committee.CMTE_ID;
+
+
+SELECT *
+FROM committee 
+FULL OUTER JOIN candidate_committee 
+ON committee.CMTE_ID = candidate_committee.CMTE_ID;
+
+SELECT *
+FROM committee 
+RIGHT JOIN candidate_committee 
+ON committee.CMTE_ID = candidate_committee.CMTE_ID;
+
+
+SELECT *
+FROM candidate_committee
+LEFT JOIN anytransactionfromonecommitteetoanother 
+ON candidate_committee.CMTE_ID = anytransactionfromonecommitteetoanother.CMTE_ID
+LEFT JOIN contributor 
+ON anytransactionfromonecommitteetoanother.CONTRIBUTOR_ID = contributor.CONTRIBUTOR_ID;
+
+SELECT * 
+FROM independentexpenditures
+RIGHT JOIN contributor
+ON independentexpenditures.CONTRIBUTOR_ID = contributor.CONTRIBUTOR_ID;
+
+
+SELECT *
+FROM operatingexpenditures
+LEFT JOIN contributor
+ON operatingexpenditures.CONTRIBUTOR_ID = contributor.CONTRIBUTOR_ID;
+
+INSERT INTO pacandpartysummary (CMTE_ID, TTL_RECEIPTS, TRANS_FROM_AFF, INDV_CONTRIB, OTHER_POL_CMTE_CONTRIB, CAND_CONTRIB, CAND_LOANS, TTL_LOANS_RECEIVED, TTL_DISB, TRANF_TO_AFF, INDV_REFUNDS, OTHER_POL_CMTE_REFUNDS, CAND_LOAN_REPAY, LOAN_REPAY, COH_BOP, COH_COP, DEBTS_OWED_BY, NONFED_TRANS_RECEIVED, CONTRIB_TO_OTHER_CMTE, IND_EXP, PTY_COORD_EXP, NONFED_SHARE_EXP, CVG_END_DT) 
+VALUES ('C12345', 100000, 20000, 50000, 30000, 10000, 2000, 5000, 80000, 3000, 2000, 500, 1000, 200, 300000, 200000, 10000, 4000, 50000, 2000, 1000, 500, '2022-01-01');
+
+
+UPDATE pacandpartysummary 
+SET TTL_RECEIPTS = 150000, INDV_CONTRIB = 75000, TTL_DISB = 100000
+WHERE CMTE_ID = 'C12345';
+
+
+
+
+
+
+
+
+
+
+
+
