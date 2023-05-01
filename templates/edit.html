@@ -1,31 +1,112 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{% block title %} Edit "{{ post['title'] }}" {% endblock %}</h1>
-
+<h1>{% block title %} Edit Candidate ID: {{ request.form['id'] or candidate['id'] }} {% endblock %}</h1>
+<hr>
 <form method="post">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" name="title" placeholder="Post title"
+	<div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" placeholder="Candidate name"
                class="form-control"
-               value="{{ request.form['title'] or post['title'] }}">
-        </input>
+               value="{{ request.form['name'] or candidate['name'] }}">
     </div>
 
     <div class="form-group">
-        <label for="content">Content</label>
-        <textarea name="content" placeholder="Post content"
-                  class="form-control">{{ request.form['content'] or post['content'] }}</textarea>
+        <label for="party_affiliation">Party Affiliation</label>
+        <input type="text" name="party_affiliation" placeholder="Party affiliation"
+               class="form-control"
+               value="{{ request.form['party_affiliation'] or candidate['party_affiliation'] }}">
     </div>
+
+    <div class="form-group">
+        <label for="election_year">Election Year</label>
+        <input type="text" name="election_year" placeholder="Election year"
+               class="form-control"
+               value="{{ request.form['election_year'] or candidate['election_year'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="office_state">Office State</label>
+        <input type="text" name="office_state" placeholder="Office state"
+               class="form-control"
+               value="{{ request.form['office_state'] or candidate['office_state'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="office">Office</label>
+        <input type="text" name="office" placeholder="Office"
+               class="form-control"
+               value="{{ request.form['office'] or candidate['office'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="office_district">Office District</label>
+        <input type="text" name="office_district" placeholder="Office district"
+               class="form-control"
+               value="{{ request.form['office_district'] or candidate['office_district'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="ici">ICI</label>
+        <input type="text" name="ici" placeholder="ICI"
+               class="form-control"
+               value="{{ request.form['ici'] or candidate['ici'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="status">Status</label>
+        <input type="text" name="status" placeholder="Status"
+               class="form-control"
+               value="{{ request.form['status'] or candidate['status'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="pcc">PCC</label>
+        <input type="text" name="pcc" placeholder="PCC"
+               class="form-control"
+               value="{{ request.form['pcc'] or candidate['pcc'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="st1">Street 1</label>
+        <input type="text" name="st1" placeholder="Street 1"
+               class="form-control"
+               value="{{ request.form['st1'] or candidate['st1'] }}">
+    </div>
+
+    <div class="form-group">
+        <label for="st2">Street 2</label>
+        <input type="text" name="st2" placeholder="Street 2"
+               class="form-control"
+               value="{{ request.form['st2'] or candidate['st2'] }}">
+    </div>
+
+	<div class="form-group">
+        <label for="city">City</label>
+        <input type="text" name="city" placeholder="City" class="form-control"
+		value="{{ request.form['city'] or candidate['city'] }}">
+    </div>
+
+	<div class="form-group">
+		<label for="st">State</label>
+		<input type="text" name="st"
+			   placeholder="State" class="form-control"
+			   value="{{ request.form['st'] or candidate['st'] }}"
+			   >
+	</div>
+	
+	<div class="form-group">
+		<label for="zip">Zip Code</label>
+		<input type="text" name="zip"
+			   placeholder="Zip Code" class="form-control"
+			   value="{{ request.form['zip'] or candidate['zip'] }}">
+	</div>	
+
+
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>
     </div>
 </form>
-<hr>
-<form action="{{ url_for('delete', id=post['id']) }}" method="POST">
-    <input type="submit" value="Delete Post"
-            class="btn btn-danger btn-sm"
-            onclick="return confirm('Are you sure you want to delete this post?')">
-</form>
+
 {% endblock %}
 

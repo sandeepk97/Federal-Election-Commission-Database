@@ -1,7 +1,7 @@
 import psycopg2
 from flask import Flask, render_template, request, url_for, flash, redirect
 from werkzeug.exceptions import abort
-
+from flask_toastr import Toastr
 
 # Connect to the PostgreSQL database
 def get_db_connection():
@@ -12,18 +12,40 @@ def get_db_connection():
 		password="sand")
 	return conn
 
-
-def get_post(post_id):
-    conn = get_db_connection()
-    post = conn.execute('SELECT * FROM posts WHERE id = ?',
-                        (post_id,)).fetchone()
-    conn.close()
-    if post is None:
-        abort(404)
-    return post
-
-
 app = Flask(__name__)
+toastr = Toastr(app)
+
+# @app.route('/candidate/<int:id>', methods=['GET'])
+def get_candidate(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    sql_select_candidate = "SELECT * FROM candidate WHERE CAND_ID = %s"
+    cursor.execute(sql_select_candidate, (id,))
+    row = cursor.fetchone()
+    conn.close()
+    if row is None:
+        abort(404)
+    candidate = {
+        'id': row[0],
+        'name': row[1],
+        'party_affiliation': row[2],
+        'election_year': row[3],
+        'office_state': row[4],
+        'office': row[5],
+        'office_district': row[6],
+        'ici': row[7],
+        'status': row[8],
+        'pcc': row[9],
+        'st1': row[10],
+        'st2': row[11],
+        'city': row[12],
+        'st': row[13],
+        'zip': row[14]
+    }
+    return candidate
+
+
+
 
 @app.route('/candidates', methods=['GET'])
 def candidates():
@@ -54,7 +76,7 @@ def candidates():
    		}
         candidates_a.append(candidate)
 
-    return render_template('candidates.html', candidates=candidates_a[1:10], navbar1="create candidate",navbar2='none',)
+    return render_template('candidates.html', candidates=candidates_a[-10:], navbar1="create candidate",navbar2='none',)
 
 
 @app.route('/')
@@ -62,65 +84,112 @@ def index():
     return render_template('index.html', posts=[])
 
 
-@app.route('/<int:post_id>')
-def post(post_id):
-    post = get_post(post_id)
-    return render_template('post.html', post=post)
+# @app.route('/<int:post_id>')
+# def post(post_id):
+#     post = get_candidate(post_id)
+#     return render_template('post.html', post=post)
 
 
 @app.route('/create', methods=('GET', 'POST'))
 def create():
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
-
-        if not title:
-            flash('Title is required!')
+        id = request.form['id']
+        name = request.form['name']
+        party_affiliation = request.form['party_affiliation']
+        election_year = request.form['election_year']
+        office_state = request.form['office_state']
+        office = request.form['office']
+        office_district = request.form['office_district']
+        ici = request.form['ici']
+        status = request.form['status']
+        pcc = request.form['pcc']
+        st1 = request.form['st1']
+        st2 = request.form['st2']
+        city = request.form['city']
+        state = request.form['st']
+        zip_code = request.form['zip']
+        sql_insert_candidate = "INSERT INTO candidate (CAND_ID, CAND_NAME, CAND_PTY_AFFILIATION, CAND_ELECTION_YR, CAND_OFFICE_ST, CAND_OFFICE, CAND_OFFICE_DISTRICT, CAND_ICI, CAND_STATUS, CAND_PCC, CAND_ST1, CAND_ST2, CAND_CITY, CAND_ST, CAND_ZIP) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        if not name:
+            flash('Name is required!')
+            return redirect(url_for('create'))
+        elif not id:
+            flash('ID is required!')
+            return redirect(url_for('create'))
+        elif not office:
+            flash('Office is required!')
+            return redirect(url_for('create'))
+        elif not city:
+            flash('City is required!')
+            return redirect(url_for('create'))
         else:
             conn = get_db_connection()
-            conn.execute('INSERT INTO posts (title, content) VALUES (?, ?)',
-                         (title, content))
+            cursor = conn.cursor()
+            cursor.execute(sql_insert_candidate, (id, name, party_affiliation, election_year, office_state, office, office_district, ici, status, pcc, st1, st2, city, state, zip_code))
             conn.commit()
             conn.close()
+            flash('"{}" was successfully created!'.format(name), 'success')
             return redirect(url_for('index'))
 
     return render_template('create.html')
 
 
-@app.route('/edit/<int:id>', methods=('GET', 'POST'))
+@app.route('/edit/<string:id>', methods=('GET', 'POST'))
 def edit_candidate(id):
-    post = get_post(id)
+    candidate = get_candidate(id)
 
     if request.method == 'POST':
-        title = request.form['title']
-        content = request.form['content']
+        name = request.form['name']
+        party_affiliation = request.form['party_affiliation']
+        election_year = request.form['election_year']
+        office_state = request.form['office_state']
+        office = request.form['office']
+        office_district = request.form['office_district']
+        ici = request.form['ici']
+        status = request.form['status']
+        pcc = request.form['pcc']
+        st1 = request.form['st1']
+        st2 = request.form['st2']
+        city = request.form['city']
+        state = request.form['st']
+        zip_code = request.form['zip']
 
-        if not title:
-            flash('Title is required!')
+        if not name:
+            flash('Name is required!')
+        elif not office:
+            flash('Office is required!')
+        elif not city:
+            flash('City is required!')
         else:
             conn = get_db_connection()
-            conn.execute('UPDATE posts SET title = ?, content = ?'
-                         ' WHERE id = ?',
-                         (title, content, id))
+            cursor = conn.cursor()
+            cursor.execute("UPDATE candidate SET CAND_NAME = %s, CAND_PTY_AFFILIATION = %s, CAND_ELECTION_YR = %s, CAND_OFFICE_ST = %s, CAND_OFFICE = %s, CAND_OFFICE_DISTRICT = %s, CAND_ICI = %s, CAND_STATUS = %s, CAND_PCC = %s, CAND_ST1 = %s, CAND_ST2 = %s, CAND_CITY = %s, CAND_ST = %s, CAND_ZIP = %s WHERE CAND_ID = %s",
+                           (name, party_affiliation, election_year, office_state, office, office_district, ici, status, pcc, st1, st2, city, state, zip_code, id))
             conn.commit()
+            cursor.close()
             conn.close()
+            flash('"{}" was successfully edited!'.format(candidate['name']), 'success')
             return redirect(url_for('index'))
 
-    return render_template('edit.html', post=post)
+    return render_template('edit.html', candidate=candidate)
 
-
-@app.route('/delete/<int:id>', methods=('POST',))
+@app.route('/delete/<string:id>', methods=['GET', 'POST'])
 def delete_candidate(id):
-    # post = get_post(id)
+    candidate = get_candidate(id)
     conn = get_db_connection()
-    conn.execute('DELETE FROM candidate WHERE CAND_ID = ?', (id,))
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM candidate WHERE CAND_ID = %s', (id,))
     conn.commit()
+    cursor.close()
     conn.close()
-    flash('"{}" was successfully deleted!'.format(post['title']))
+    flash('"{}" was successfully deleted!'.format(candidate['name']), 'success')
     return redirect(url_for('index'))
 
 
 # candidates()
+import os
 
+app.secret_key = os.urandom(24)
+app.config['SESSION_TYPE'] = 'memcached'
 if __name__ == '__main__':
-  app.run(debug=True)
+    app.run(debug=True)
+	# app.run()
