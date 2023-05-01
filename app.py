@@ -48,7 +48,7 @@ def get_candidate(id):
 
 
 @app.route('/candidates', methods=['GET'])
-def candidates():
+def get_all_candidates():
     conn = get_db_connection()
     cursor = conn.cursor()
     # Retrieve all candidates from the database
@@ -76,12 +76,12 @@ def candidates():
    		}
         candidates_a.append(candidate)
 
-    return render_template('candidates.html', candidates=candidates_a[-10:], navbar1="create candidate",navbar2='none',)
+    return render_template('candidates/candidates.html', candidates=candidates_a[-10:], navbar1="create candidate", navbar2='none',navbar1Link=url_for("create_candidate"),)
 
 
 @app.route('/')
 def index():
-    return render_template('index.html', posts=[])
+    return render_template('index.html', navbar1Link=url_for("index"),)
 
 
 # @app.route('/<int:post_id>')
@@ -90,8 +90,8 @@ def index():
 #     return render_template('post.html', post=post)
 
 
-@app.route('/create', methods=('GET', 'POST'))
-def create():
+@app.route('/candidates/create', methods=('GET', 'POST'))
+def create_candidate():
     if request.method == 'POST':
         id = request.form['id']
         name = request.form['name']
@@ -111,16 +111,16 @@ def create():
         sql_insert_candidate = "INSERT INTO candidate (CAND_ID, CAND_NAME, CAND_PTY_AFFILIATION, CAND_ELECTION_YR, CAND_OFFICE_ST, CAND_OFFICE, CAND_OFFICE_DISTRICT, CAND_ICI, CAND_STATUS, CAND_PCC, CAND_ST1, CAND_ST2, CAND_CITY, CAND_ST, CAND_ZIP) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
         if not name:
             flash('Name is required!')
-            return redirect(url_for('create'))
+            return redirect(url_for('create_candidate'))
         elif not id:
             flash('ID is required!')
-            return redirect(url_for('create'))
+            return redirect(url_for('create_candidate'))
         elif not office:
             flash('Office is required!')
-            return redirect(url_for('create'))
+            return redirect(url_for('create_candidate'))
         elif not city:
             flash('City is required!')
-            return redirect(url_for('create'))
+            return redirect(url_for('create_candidate'))
         else:
             conn = get_db_connection()
             cursor = conn.cursor()
@@ -130,10 +130,10 @@ def create():
             flash('"{}" was successfully created!'.format(name), 'success')
             return redirect(url_for('index'))
 
-    return render_template('create.html')
+    return render_template('candidates/create_candidate.html',navbar1Link=url_for("create_candidate"),)
 
 
-@app.route('/edit/<string:id>', methods=('GET', 'POST'))
+@app.route('/candidates/edit/<string:id>', methods=('GET', 'POST'))
 def edit_candidate(id):
     candidate = get_candidate(id)
 
@@ -170,9 +170,9 @@ def edit_candidate(id):
             flash('"{}" was successfully edited!'.format(candidate['name']), 'success')
             return redirect(url_for('index'))
 
-    return render_template('edit.html', candidate=candidate)
+    return render_template('candidates/edit_candidate.html', candidate=candidate, navbar1Link=url_for("edit_candidate", id=id ),)
 
-@app.route('/delete/<string:id>', methods=['GET', 'POST'])
+@app.route('/candidates/delete/<string:id>', methods=['GET', 'POST'])
 def delete_candidate(id):
     candidate = get_candidate(id)
     conn = get_db_connection()
@@ -182,10 +182,9 @@ def delete_candidate(id):
     cursor.close()
     conn.close()
     flash('"{}" was successfully deleted!'.format(candidate['name']), 'success')
-    return redirect(url_for('index'))
+    return redirect(url_for('index'),navbar1Link=url_for("index"),)
 
 
-# candidates()
 import os
 
 app.secret_key = os.urandom(24)

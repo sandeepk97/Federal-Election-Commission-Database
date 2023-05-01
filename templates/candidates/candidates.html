@@ -42,8 +42,8 @@
       <td>{{ candidate.city }}</td>
       <td>{{ candidate.st }}</td>
       <td>{{ candidate.zip }}</td>
-	  <td><a href="/edit/{{ candidate.id }}">Edit</a></td>
-      <td><a href="/delete/{{ candidate.id }}">Delete</a></td>
+	  <td><a href="/candidates/edit/{{ candidate.id }}" class="btn btn-primary">Edit</a></td>
+	  <td><a href="/candidates/delete/{{ candidate.id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this candidate?')">Delete</a></td>	  
     </tr>
     {% endfor %}
   </tbody>
