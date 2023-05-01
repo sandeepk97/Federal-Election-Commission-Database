@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %} Edit Committee ID: {{ request.form['cmte_id'] or committee['cmte_id'] }} {% endblock %}</h1>
+<hr>
+<form method="post">
+	<div class="form-group">
+        <label for="cmte_id">Committee ID</label>
+        <input type="text" name="cmte_id" placeholder="Committee ID" class="form-control"
+               value="{{ request.form['cmte_id'] or committee['cmte_id'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_nm">Committee Name</label>
+        <input type="text" name="cmte_nm" placeholder="Committee Name" class="form-control"
+               value="{{ request.form['cmte_nm'] or committee['cmte_nm'] }}">
+    </div>
+    <div class="form-group">
+        <label for="tres_nm">Treasurer Name</label>
+        <input type="text" name="tres_nm" placeholder="Treasurer Name" class="form-control"
+               value="{{ request.form['tres_nm'] or committee['tres_nm'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_st1">Committee Street 1</label>
+        <input type="text" name="cmte_st1" placeholder="Committee Street 1" class="form-control"
+               value="{{ request.form['cmte_st1'] or committee['cmte_st1'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_st2">Committee Street 2</label>
+        <input type="text" name="cmte_st2" placeholder="Committee Street 2" class="form-control"
+               value="{{ request.form['cmte_st2'] or committee['cmte_st2'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_city">Committee City</label>
+        <input type="text" name="cmte_city" placeholder="Committee City" class="form-control"
+               value="{{ request.form['cmte_city'] or committee['cmte_city'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_st">Committee State</label>
+        <input type="text" name="cmte_st" placeholder="Committee State" class="form-control"
+               value="{{ request.form['cmte_st'] or committee['cmte_st'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_zip">Committee Zip Code</label>
+        <input type="text" name="cmte_zip" placeholder="Committee Zip Code" class="form-control"
+               value="{{ request.form['cmte_zip'] or committee['cmte_zip'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cmte_dsgn">Committee Designation</label>
+        <input type="text" name="cmte_dsgn" placeholder="Committee Designation" class="form-control"
+               value="{{ request.form['cmte_dsgn'] or committee['cmte_dsgn'] }}">
+    </div>
+
+	<div class="form-group">
+		<label for="cmte_tp">Committee Type</label>
+		<input type="text" name="cmte_tp" placeholder="Committee Type" class="form-control" 
+		value="{{ request.form['cmte_tp'] or committee['cmte_tp'] }}">
+	</div>
+	<div class="form-group">
+		<label for="cmte_pty_affiliation">Committee Party Affiliation</label>
+		<input type="text" name="cmte_pty_affiliation" placeholder="Committee Party Affiliation" class="form-control" 
+		value="{{ request.form['cmte_pty_affiliation'] or committee['cmte_pty_affiliation'] }}">
+	</div>
+	<div class="form-group">
+		<label for="cmte_filing_freq">Committee Filing Frequency</label>
+		<input type="text" name="cmte_filing_freq" placeholder="Committee Filing Frequency" class="form-control" 
+		value="{{ request.form['cmte_filing_freq'] or committee['cmte_filing_freq'] }}">
+	</div>
+	<div class="form-group">
+		<label for="org_tp">Organization Type</label>
+		<input type="text" name="org_tp" placeholder="Organization Type" class="form-control" 
+		value="{{ request.form['org_tp'] or committee['org_tp'] }}">
+	</div>
+	<div class="form-group">
+        <label for="cmte_filing_freq">Filing Frequency</label>
+        <input type="text" name="cmte_filing_freq" placeholder="Filing Frequency" class="form-control" 
+		value="{{ request.form['cmte_filing_freq'] or committee['cmte_filing_freq'] }}">
+    </div>
+    <div class="form-group">
+        <label for="org_type">Organization Type</label>
+        <input type="text" name="org_type" placeholder="Organization Type" class="form-control" value="P">
+    </div>
+    <div class="form-group">
+        <label for="connected_org_nm">Connected Organization Name</label>
+        <input type="text" name="connected_org_nm" placeholder="Connected Organization Name" class="form-control" 
+		value="{{ request.form['connected_org_nm'] or committee['connected_org_nm'] }}">
+    </div>
+    <div class="form-group">
+        <label for="cand_id">Candidate ID</label>
+        <input type="text" name="cand_id" placeholder="Candidate ID" class="form-control" 
+		value="{{ request.form['cand_id'] or committee['cand_id'] }}">
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+{% endblock %}
+

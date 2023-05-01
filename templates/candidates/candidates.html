@@ -2,8 +2,8 @@
 
 {% block content %}
 <h1>All Candidates</h1>
-<table>
-  <thead>
+<table class="table table-striped">
+  <thead class="thead-dark">
     <tr>
       <th>ID</th>
       <th>Name</th>
@@ -20,7 +20,7 @@
       <th>City</th>
       <th>ST</th>
       <th>Zip</th>
-	  <th></th> <!-- Edit button column -->
+      <th></th> <!-- Edit button column -->
       <th></th> <!-- Delete button column -->
     </tr>
   </thead>
@@ -42,10 +42,11 @@
       <td>{{ candidate.city }}</td>
       <td>{{ candidate.st }}</td>
       <td>{{ candidate.zip }}</td>
-	  <td><a href="/candidates/edit/{{ candidate.id }}" class="btn btn-primary">Edit</a></td>
-	  <td><a href="/candidates/delete/{{ candidate.id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this candidate?')">Delete</a></td>	  
+      <td><a href="/candidates/edit/{{ candidate.id }}" class="btn btn-primary">Edit</a></td>
+      <td><a href="/candidates/delete/{{ candidate.id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this candidate?')">Delete</a></td>	  
     </tr>
     {% endfor %}
   </tbody>
 </table>
+
 {% endblock %}

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>All Committees</h1>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Treasurer Name</th>
+      <th>Street 1</th>
+      <th>Street 2</th>
+      <th>City</th>
+      <th>State</th>
+      <th>ZIP</th>
+      <th>Designation</th>
+      <th>Type</th>
+      <th>Party Affiliation</th>
+      <th>Filing Frequency</th>
+      <th>Organization Type</th>
+      <th>Connected Organization Name</th>
+      <th>Candidate ID</th>
+      <th></th> <!-- Edit button column -->
+      <th></th> <!-- Delete button column -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for committee in committees %}
+    <tr>
+      <td>{{ committee.cmte_id }}</td>
+      <td>{{ committee.cmte_nm }}</td>
+      <td>{{ committee.tres_nm }}</td>
+      <td>{{ committee.cmte_st1 }}</td>
+      <td>{{ committee.cmte_st2 }}</td>
+      <td>{{ committee.cmte_city }}</td>
+      <td>{{ committee.cmte_st }}</td>
+      <td>{{ committee.cmte_zip }}</td>
+      <td>{{ committee.cmte_dsgn }}</td>
+      <td>{{ committee.cmte_tp }}</td>
+      <td>{{ committee.cmte_pty_affiliation }}</td>
+      <td>{{ committee.cmte_filing_freq }}</td>
+      <td>{{ committee.org_tp }}</td>
+      <td>{{ committee.connected_org_nm }}</td>
+      <td>{{ committee.cand_id }}</td>
+      <td><a href="/committees/edit/{{ committee.cmte_id }}" class="btn btn-primary">Edit</a></td>
+      <td><a href="/committees/delete/{{ committee.cmte_id }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this committee?')">Delete</a></td>	  
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

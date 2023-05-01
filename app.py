@@ -15,7 +15,12 @@ def get_db_connection():
 app = Flask(__name__)
 toastr = Toastr(app)
 
-# @app.route('/candidate/<int:id>', methods=['GET'])
+
+@app.route('/')
+def index():
+    return render_template('index.html', navbar1Link=url_for("index"),)
+
+
 def get_candidate(id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -43,9 +48,6 @@ def get_candidate(id):
         'zip': row[14]
     }
     return candidate
-
-
-
 
 @app.route('/candidates', methods=['GET'])
 def get_all_candidates():
@@ -77,17 +79,6 @@ def get_all_candidates():
         candidates_a.append(candidate)
 
     return render_template('candidates/candidates.html', candidates=candidates_a[-10:], navbar1="create candidate", navbar2='none',navbar1Link=url_for("create_candidate"),)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html', navbar1Link=url_for("index"),)
-
-
-# @app.route('/<int:post_id>')
-# def post(post_id):
-#     post = get_candidate(post_id)
-#     return render_template('post.html', post=post)
 
 
 @app.route('/candidates/create', methods=('GET', 'POST'))
@@ -182,8 +173,155 @@ def delete_candidate(id):
     cursor.close()
     conn.close()
     flash('"{}" was successfully deleted!'.format(candidate['name']), 'success')
-    return redirect(url_for('index'),navbar1Link=url_for("index"),)
+    return redirect(url_for('get_all_candidates'))
 
+
+def get_committee(id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    sql_select_committee = "SELECT * FROM committee WHERE CMTE_ID = %s"
+    cursor.execute(sql_select_committee, (id,))
+    row = cursor.fetchone()
+    conn.close()
+    if row is None:
+        abort(404)
+    committee = {
+			'cmte_id': row[0],
+			'cmte_nm': row[1],
+			'tres_nm': row[2],
+			'cmte_st1': row[3],
+			'cmte_st2': row[4],
+			'cmte_city': row[5],
+			'cmte_st': row[6],
+			'cmte_zip': row[7],
+			'cmte_dsgn': row[8],
+			'cmte_tp': row[9],
+			'cmte_pty_affiliation': row[10],
+			'cmte_filing_freq': row[11],
+			'org_tp': row[12],
+			'connected_org_nm': row[13],
+			'cand_id': row[14]
+		}
+    return committee
+
+
+@app.route('/committees', methods=['GET'])
+def get_all_committees():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    committees_a = []
+    sql_select_committees = "SELECT * FROM committee"
+    cursor.execute(sql_select_committees)
+    rows = cursor.fetchall()
+    for row in rows:
+        committee = {
+			'cmte_id': row[0],
+			'cmte_nm': row[1],
+			'tres_nm': row[2],
+			'cmte_st1': row[3],
+			'cmte_st2': row[4],
+			'cmte_city': row[5],
+			'cmte_st': row[6],
+			'cmte_zip': row[7],
+			'cmte_dsgn': row[8],
+			'cmte_tp': row[9],
+			'cmte_pty_affiliation': row[10],
+			'cmte_filing_freq': row[11],
+			'org_tp': row[12],
+			'connected_org_nm': row[13],
+			'cand_id': row[14]
+		}
+
+        committees_a.append(committee)
+    conn.close()
+    return render_template('committees/committees.html', committees=committees_a[-10:], navbar1='create committee', navbar2='none', navbar1Link=url_for("create_committee"))
+
+@app.route('/committees/create', methods=('GET', 'POST'))
+def create_committee():
+    if request.method == 'POST':
+        cmte_id = request.form['cmte_id']
+        cmte_name = request.form['cmte_nm']
+        tres_name = request.form['tres_nm']
+        cmte_st1 = request.form['cmte_st1']
+        cmte_st2 = request.form['cmte_st2']
+        cmte_city = request.form['cmte_city']
+        cmte_st = request.form['cmte_st']
+        cmte_zip = request.form['cmte_zip']
+        cmte_dsgn = request.form['cmte_dsgn']
+        cmte_tp = request.form['cmte_tp']
+        cmte_pty_affiliation = request.form['cmte_pty_affiliation']
+        cmte_filing_freq = request.form['cmte_filing_freq']
+        org_tp = request.form['org_tp']
+        connected_org_nm = request.form['connected_org_nm']
+        cand_id = request.form['cand_id']
+        sql_insert_committee = "INSERT INTO committee (CMTE_ID, CMTE_NM, TRES_NM, CMTE_ST1, CMTE_ST2, CMTE_CITY, CMTE_ST, CMTE_ZIP, CMTE_DSGN, CMTE_TP, CMTE_PTY_AFFILIATION, CMTE_FILING_FREQ, ORG_TP, CONNECTED_ORG_NM, CAND_ID) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        if not cmte_name:
+            flash('Committee name is required!')
+            return redirect(url_for('create_committee'))
+        elif not cmte_id:
+            flash('Committee ID is required!')
+            return redirect(url_for('create_committee'))
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute(sql_insert_committee, (cmte_id, cmte_name, tres_name, cmte_st1, cmte_st2, cmte_city, cmte_st, cmte_zip, cmte_dsgn, cmte_tp, cmte_pty_affiliation, cmte_filing_freq, org_tp, connected_org_nm, cand_id))
+            conn.commit()
+            conn.close()
+            flash('Committee "{}" was successfully created!'.format(cmte_name), 'success')
+            return redirect(url_for('index'))
+
+    return render_template('committees/create_committee.html',navbar1Link=url_for("create_committee"))
+
+
+@app.route('/committees/edit/<string:id>', methods=('GET', 'POST'))
+def edit_committee(id):
+    committee = get_committee(id)
+
+    if request.method == 'POST':
+        cmte_id = request.form['cmte_id']
+        cmte_nm = request.form['cmte_nm']
+        tres_nm = request.form['tres_nm']
+        cmte_st1 = request.form['cmte_st1']
+        cmte_st2 = request.form['cmte_st2']
+        cmte_city = request.form['cmte_city']
+        cmte_st = request.form['cmte_st']
+        cmte_zip = request.form['cmte_zip']
+        cmte_dsgn = request.form['cmte_dsgn']
+        cmte_tp = request.form['cmte_tp']
+        cmte_pty_affiliation = request.form['cmte_pty_affiliation']
+        cmte_filing_freq = request.form['cmte_filing_freq']
+        org_tp = request.form['org_tp']
+        connected_org_nm = request.form['connected_org_nm']
+        cand_id = request.form['cand_id']
+
+        if not cmte_id:
+            flash('Committee ID is required!')
+        elif not cmte_nm:
+            flash('Committee Name is required!')
+        else:
+            conn = get_db_connection()
+            cursor = conn.cursor()
+            cursor.execute("UPDATE committee SET CMTE_ID = %s, CMTE_NM = %s, TRES_NM = %s, CMTE_ST1 = %s, CMTE_ST2 = %s, CMTE_CITY = %s, CMTE_ST = %s, CMTE_ZIP = %s, CMTE_DSGN = %s, CMTE_TP = %s, CMTE_PTY_AFFILIATION = %s, CMTE_FILING_FREQ = %s, ORG_TP = %s, CONNECTED_ORG_NM = %s, CAND_ID = %s WHERE CMTE_ID = %s",
+                           (cmte_id, cmte_nm, tres_nm, cmte_st1, cmte_st2, cmte_city, cmte_st, cmte_zip, cmte_dsgn, cmte_tp, cmte_pty_affiliation, cmte_filing_freq, org_tp, connected_org_nm, cand_id, id))
+            conn.commit()
+            cursor.close()
+            conn.close()
+            flash('"{}" was successfully edited!'.format(committee['cmte_nm']), 'success')
+            return redirect(url_for('index'))
+
+    return render_template('committees/edit_committee.html', committee=committee, navbar1Link=url_for("edit_committee", id=id))
+
+@app.route('/committees/delete/<string:id>', methods=['GET', 'POST'])
+def delete_committee(id):
+    committee = get_committee(id)
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM committee WHERE CMTE_ID = %s', (id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    flash('"{}" was successfully deleted!'.format(committee['cmte_nm']), 'success')
+    return redirect(url_for('get_all_committees'))
 
 import os
 
@@ -191,4 +329,3 @@ app.secret_key = os.urandom(24)
 app.config['SESSION_TYPE'] = 'memcached'
 if __name__ == '__main__':
     app.run(debug=True)
-	# app.run()
